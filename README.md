@@ -86,3 +86,26 @@ make ARCH=arm -j 4
 
 Second command is needed only if you want to modify U-boot
 
+# Kernel
+
+Using altera linux repository for kernel
+
+https://github.com/altera-opensource/linux-socfpga
+
+Fork used
+
+https://github.com/hellgate202/linux-socfpga
+
+Current latest branch was used socfpga-5.8
+
+To build kernel
+
+```
+make ARCH=arm socfpga_defconfig
+make ARCH=arm menuconfig
+make ARCH=arm LOCALVERSION=zImage -j 4
+```
+
+In order to support flashing FPGA from linux check all boxes in Overlayfs
+
+# RootFS
