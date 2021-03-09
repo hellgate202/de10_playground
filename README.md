@@ -96,7 +96,7 @@ Fork used
 
 https://github.com/hellgate202/linux-socfpga
 
-Current latest branch was used socfpga-5.8
+Current latest branch was used socfpga-5.10
 
 To build kernel
 
@@ -109,3 +109,66 @@ make ARCH=arm LOCALVERSION=zImage -j 4
 In order to support flashing FPGA from linux check all boxes in Overlayfs
 
 # RootFS
+
+Create rootfs directory and setup deboostrap and qemu
+
+Install these packages if they are not present
+```
+sudo apt install debootstrap qemu-user-static
+```
+
+Prepare debian buster RootFS
+```
+mkdir rootfs
+sudo debootstrap --arch=armhf --foreign buster rootfs
+sudo cp /usr/bin/qemu-arm-static rootfs/usr/bin/
+sudo chroot rootfs /usr/bin/qemu-arm-static /bin/bash -i
+/debootstrap/debootstrap --second-stage
+```
+
+Configuring RootFS and installing some packages
+
+```
+apt install vim
+apt install locales
+dpkg-reconfigure locales
+apt install openssh-server
+apt install haveged
+apt install net-tools build-essential device-tree-compiler
+systemctl enable serial-getty@ttyS0.service
+```
+
+Set up new password
+
+```
+passwd
+```
+
+Add this to `/etc/fstab`
+```
+none		/tmp	tmpfs	defaults,noatime,mode=1777	0	0
+/dev/mmcblk0p2	/	ext4	defaults	0	1 
+```
+
+Add this to `/etc/network/interfaces`
+```
+auto lo eth0
+allow-hotplug eth0
+iface lo inet loopback
+iface eth0 inet dhcp
+```
+
+Add this to `/etc/apt/sources.list`
+```
+deb http://deb.debian.org/debian/ buster main contrib non-free
+deb-src http://deb.debian.org/debian/ buster main contrib non-free
+deb http://deb.debian.org/debian/ buster-updates main contrib non-free
+deb-src http://deb.debian.org/debian/ buster-updates main contrib non-free
+deb http://deb.debian.org/debian-security/ buster/updates main contrib non-free
+deb-src http://deb.debian.org/debian-security/ buster/updates main contrib non-free
+```
+
+Change and uncomment this line in `/etc/ssh/sshd_config`
+```
+PermitRootLogin yes
+```
