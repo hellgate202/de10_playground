@@ -33,6 +33,11 @@ module soc_system_mm_interconnect_1 (
 		input  wire [31:0] button_pio_s1_readdata,                                 //                                                 .readdata
 		output wire [31:0] button_pio_s1_writedata,                                //                                                 .writedata
 		output wire        button_pio_s1_chipselect,                               //                                                 .chipselect
+		output wire [0:0]  custom_leds_0_s0_address,                               //                                 custom_leds_0_s0.address
+		output wire        custom_leds_0_s0_write,                                 //                                                 .write
+		output wire        custom_leds_0_s0_read,                                  //                                                 .read
+		input  wire [31:0] custom_leds_0_s0_readdata,                              //                                                 .readdata
+		output wire [31:0] custom_leds_0_s0_writedata,                             //                                                 .writedata
 		output wire [1:0]  dipsw_pio_s1_address,                                   //                                     dipsw_pio_s1.address
 		output wire        dipsw_pio_s1_write,                                     //                                                 .write
 		input  wire [31:0] dipsw_pio_s1_readdata,                                  //                                                 .readdata
@@ -50,11 +55,6 @@ module soc_system_mm_interconnect_1 (
 		output wire [31:0] jtag_uart_avalon_jtag_slave_writedata,                  //                                                 .writedata
 		input  wire        jtag_uart_avalon_jtag_slave_waitrequest,                //                                                 .waitrequest
 		output wire        jtag_uart_avalon_jtag_slave_chipselect,                 //                                                 .chipselect
-		output wire [1:0]  led_pio_s1_address,                                     //                                       led_pio_s1.address
-		output wire        led_pio_s1_write,                                       //                                                 .write
-		input  wire [31:0] led_pio_s1_readdata,                                    //                                                 .readdata
-		output wire [31:0] led_pio_s1_writedata,                                   //                                                 .writedata
-		output wire        led_pio_s1_chipselect,                                  //                                                 .chipselect
 		output wire [0:0]  sysid_qsys_control_slave_address,                       //                         sysid_qsys_control_slave.address
 		input  wire [31:0] sysid_qsys_control_slave_readdata                       //                                                 .readdata
 	);
@@ -162,33 +162,33 @@ module soc_system_mm_interconnect_1 (
 	wire    [5:0] cmd_mux_002_src_channel;                                                    // cmd_mux_002:src_channel -> sysid_qsys_control_slave_agent:cp_channel
 	wire          cmd_mux_002_src_startofpacket;                                              // cmd_mux_002:src_startofpacket -> sysid_qsys_control_slave_agent:cp_startofpacket
 	wire          cmd_mux_002_src_endofpacket;                                                // cmd_mux_002:src_endofpacket -> sysid_qsys_control_slave_agent:cp_endofpacket
-	wire   [31:0] led_pio_s1_agent_m0_readdata;                                               // led_pio_s1_translator:uav_readdata -> led_pio_s1_agent:m0_readdata
-	wire          led_pio_s1_agent_m0_waitrequest;                                            // led_pio_s1_translator:uav_waitrequest -> led_pio_s1_agent:m0_waitrequest
-	wire          led_pio_s1_agent_m0_debugaccess;                                            // led_pio_s1_agent:m0_debugaccess -> led_pio_s1_translator:uav_debugaccess
-	wire   [31:0] led_pio_s1_agent_m0_address;                                                // led_pio_s1_agent:m0_address -> led_pio_s1_translator:uav_address
-	wire    [3:0] led_pio_s1_agent_m0_byteenable;                                             // led_pio_s1_agent:m0_byteenable -> led_pio_s1_translator:uav_byteenable
-	wire          led_pio_s1_agent_m0_read;                                                   // led_pio_s1_agent:m0_read -> led_pio_s1_translator:uav_read
-	wire          led_pio_s1_agent_m0_readdatavalid;                                          // led_pio_s1_translator:uav_readdatavalid -> led_pio_s1_agent:m0_readdatavalid
-	wire          led_pio_s1_agent_m0_lock;                                                   // led_pio_s1_agent:m0_lock -> led_pio_s1_translator:uav_lock
-	wire   [31:0] led_pio_s1_agent_m0_writedata;                                              // led_pio_s1_agent:m0_writedata -> led_pio_s1_translator:uav_writedata
-	wire          led_pio_s1_agent_m0_write;                                                  // led_pio_s1_agent:m0_write -> led_pio_s1_translator:uav_write
-	wire    [2:0] led_pio_s1_agent_m0_burstcount;                                             // led_pio_s1_agent:m0_burstcount -> led_pio_s1_translator:uav_burstcount
-	wire          led_pio_s1_agent_rf_source_valid;                                           // led_pio_s1_agent:rf_source_valid -> led_pio_s1_agent_rsp_fifo:in_valid
-	wire  [106:0] led_pio_s1_agent_rf_source_data;                                            // led_pio_s1_agent:rf_source_data -> led_pio_s1_agent_rsp_fifo:in_data
-	wire          led_pio_s1_agent_rf_source_ready;                                           // led_pio_s1_agent_rsp_fifo:in_ready -> led_pio_s1_agent:rf_source_ready
-	wire          led_pio_s1_agent_rf_source_startofpacket;                                   // led_pio_s1_agent:rf_source_startofpacket -> led_pio_s1_agent_rsp_fifo:in_startofpacket
-	wire          led_pio_s1_agent_rf_source_endofpacket;                                     // led_pio_s1_agent:rf_source_endofpacket -> led_pio_s1_agent_rsp_fifo:in_endofpacket
-	wire          led_pio_s1_agent_rsp_fifo_out_valid;                                        // led_pio_s1_agent_rsp_fifo:out_valid -> led_pio_s1_agent:rf_sink_valid
-	wire  [106:0] led_pio_s1_agent_rsp_fifo_out_data;                                         // led_pio_s1_agent_rsp_fifo:out_data -> led_pio_s1_agent:rf_sink_data
-	wire          led_pio_s1_agent_rsp_fifo_out_ready;                                        // led_pio_s1_agent:rf_sink_ready -> led_pio_s1_agent_rsp_fifo:out_ready
-	wire          led_pio_s1_agent_rsp_fifo_out_startofpacket;                                // led_pio_s1_agent_rsp_fifo:out_startofpacket -> led_pio_s1_agent:rf_sink_startofpacket
-	wire          led_pio_s1_agent_rsp_fifo_out_endofpacket;                                  // led_pio_s1_agent_rsp_fifo:out_endofpacket -> led_pio_s1_agent:rf_sink_endofpacket
-	wire          cmd_mux_003_src_valid;                                                      // cmd_mux_003:src_valid -> led_pio_s1_agent:cp_valid
-	wire  [105:0] cmd_mux_003_src_data;                                                       // cmd_mux_003:src_data -> led_pio_s1_agent:cp_data
-	wire          cmd_mux_003_src_ready;                                                      // led_pio_s1_agent:cp_ready -> cmd_mux_003:src_ready
-	wire    [5:0] cmd_mux_003_src_channel;                                                    // cmd_mux_003:src_channel -> led_pio_s1_agent:cp_channel
-	wire          cmd_mux_003_src_startofpacket;                                              // cmd_mux_003:src_startofpacket -> led_pio_s1_agent:cp_startofpacket
-	wire          cmd_mux_003_src_endofpacket;                                                // cmd_mux_003:src_endofpacket -> led_pio_s1_agent:cp_endofpacket
+	wire   [31:0] custom_leds_0_s0_agent_m0_readdata;                                         // custom_leds_0_s0_translator:uav_readdata -> custom_leds_0_s0_agent:m0_readdata
+	wire          custom_leds_0_s0_agent_m0_waitrequest;                                      // custom_leds_0_s0_translator:uav_waitrequest -> custom_leds_0_s0_agent:m0_waitrequest
+	wire          custom_leds_0_s0_agent_m0_debugaccess;                                      // custom_leds_0_s0_agent:m0_debugaccess -> custom_leds_0_s0_translator:uav_debugaccess
+	wire   [31:0] custom_leds_0_s0_agent_m0_address;                                          // custom_leds_0_s0_agent:m0_address -> custom_leds_0_s0_translator:uav_address
+	wire    [3:0] custom_leds_0_s0_agent_m0_byteenable;                                       // custom_leds_0_s0_agent:m0_byteenable -> custom_leds_0_s0_translator:uav_byteenable
+	wire          custom_leds_0_s0_agent_m0_read;                                             // custom_leds_0_s0_agent:m0_read -> custom_leds_0_s0_translator:uav_read
+	wire          custom_leds_0_s0_agent_m0_readdatavalid;                                    // custom_leds_0_s0_translator:uav_readdatavalid -> custom_leds_0_s0_agent:m0_readdatavalid
+	wire          custom_leds_0_s0_agent_m0_lock;                                             // custom_leds_0_s0_agent:m0_lock -> custom_leds_0_s0_translator:uav_lock
+	wire   [31:0] custom_leds_0_s0_agent_m0_writedata;                                        // custom_leds_0_s0_agent:m0_writedata -> custom_leds_0_s0_translator:uav_writedata
+	wire          custom_leds_0_s0_agent_m0_write;                                            // custom_leds_0_s0_agent:m0_write -> custom_leds_0_s0_translator:uav_write
+	wire    [2:0] custom_leds_0_s0_agent_m0_burstcount;                                       // custom_leds_0_s0_agent:m0_burstcount -> custom_leds_0_s0_translator:uav_burstcount
+	wire          custom_leds_0_s0_agent_rf_source_valid;                                     // custom_leds_0_s0_agent:rf_source_valid -> custom_leds_0_s0_agent_rsp_fifo:in_valid
+	wire  [106:0] custom_leds_0_s0_agent_rf_source_data;                                      // custom_leds_0_s0_agent:rf_source_data -> custom_leds_0_s0_agent_rsp_fifo:in_data
+	wire          custom_leds_0_s0_agent_rf_source_ready;                                     // custom_leds_0_s0_agent_rsp_fifo:in_ready -> custom_leds_0_s0_agent:rf_source_ready
+	wire          custom_leds_0_s0_agent_rf_source_startofpacket;                             // custom_leds_0_s0_agent:rf_source_startofpacket -> custom_leds_0_s0_agent_rsp_fifo:in_startofpacket
+	wire          custom_leds_0_s0_agent_rf_source_endofpacket;                               // custom_leds_0_s0_agent:rf_source_endofpacket -> custom_leds_0_s0_agent_rsp_fifo:in_endofpacket
+	wire          custom_leds_0_s0_agent_rsp_fifo_out_valid;                                  // custom_leds_0_s0_agent_rsp_fifo:out_valid -> custom_leds_0_s0_agent:rf_sink_valid
+	wire  [106:0] custom_leds_0_s0_agent_rsp_fifo_out_data;                                   // custom_leds_0_s0_agent_rsp_fifo:out_data -> custom_leds_0_s0_agent:rf_sink_data
+	wire          custom_leds_0_s0_agent_rsp_fifo_out_ready;                                  // custom_leds_0_s0_agent:rf_sink_ready -> custom_leds_0_s0_agent_rsp_fifo:out_ready
+	wire          custom_leds_0_s0_agent_rsp_fifo_out_startofpacket;                          // custom_leds_0_s0_agent_rsp_fifo:out_startofpacket -> custom_leds_0_s0_agent:rf_sink_startofpacket
+	wire          custom_leds_0_s0_agent_rsp_fifo_out_endofpacket;                            // custom_leds_0_s0_agent_rsp_fifo:out_endofpacket -> custom_leds_0_s0_agent:rf_sink_endofpacket
+	wire          cmd_mux_003_src_valid;                                                      // cmd_mux_003:src_valid -> custom_leds_0_s0_agent:cp_valid
+	wire  [105:0] cmd_mux_003_src_data;                                                       // cmd_mux_003:src_data -> custom_leds_0_s0_agent:cp_data
+	wire          cmd_mux_003_src_ready;                                                      // custom_leds_0_s0_agent:cp_ready -> cmd_mux_003:src_ready
+	wire    [5:0] cmd_mux_003_src_channel;                                                    // cmd_mux_003:src_channel -> custom_leds_0_s0_agent:cp_channel
+	wire          cmd_mux_003_src_startofpacket;                                              // cmd_mux_003:src_startofpacket -> custom_leds_0_s0_agent:cp_startofpacket
+	wire          cmd_mux_003_src_endofpacket;                                                // cmd_mux_003:src_endofpacket -> custom_leds_0_s0_agent:cp_endofpacket
 	wire   [31:0] dipsw_pio_s1_agent_m0_readdata;                                             // dipsw_pio_s1_translator:uav_readdata -> dipsw_pio_s1_agent:m0_readdata
 	wire          dipsw_pio_s1_agent_m0_waitrequest;                                          // dipsw_pio_s1_translator:uav_waitrequest -> dipsw_pio_s1_agent:m0_waitrequest
 	wire          dipsw_pio_s1_agent_m0_debugaccess;                                          // dipsw_pio_s1_agent:m0_debugaccess -> dipsw_pio_s1_translator:uav_debugaccess
@@ -286,11 +286,11 @@ module soc_system_mm_interconnect_1 (
 	wire    [5:0] router_004_src_channel;                                                     // router_004:src_channel -> rsp_demux_002:sink_channel
 	wire          router_004_src_startofpacket;                                               // router_004:src_startofpacket -> rsp_demux_002:sink_startofpacket
 	wire          router_004_src_endofpacket;                                                 // router_004:src_endofpacket -> rsp_demux_002:sink_endofpacket
-	wire          led_pio_s1_agent_rp_valid;                                                  // led_pio_s1_agent:rp_valid -> router_005:sink_valid
-	wire  [105:0] led_pio_s1_agent_rp_data;                                                   // led_pio_s1_agent:rp_data -> router_005:sink_data
-	wire          led_pio_s1_agent_rp_ready;                                                  // router_005:sink_ready -> led_pio_s1_agent:rp_ready
-	wire          led_pio_s1_agent_rp_startofpacket;                                          // led_pio_s1_agent:rp_startofpacket -> router_005:sink_startofpacket
-	wire          led_pio_s1_agent_rp_endofpacket;                                            // led_pio_s1_agent:rp_endofpacket -> router_005:sink_endofpacket
+	wire          custom_leds_0_s0_agent_rp_valid;                                            // custom_leds_0_s0_agent:rp_valid -> router_005:sink_valid
+	wire  [105:0] custom_leds_0_s0_agent_rp_data;                                             // custom_leds_0_s0_agent:rp_data -> router_005:sink_data
+	wire          custom_leds_0_s0_agent_rp_ready;                                            // router_005:sink_ready -> custom_leds_0_s0_agent:rp_ready
+	wire          custom_leds_0_s0_agent_rp_startofpacket;                                    // custom_leds_0_s0_agent:rp_startofpacket -> router_005:sink_startofpacket
+	wire          custom_leds_0_s0_agent_rp_endofpacket;                                      // custom_leds_0_s0_agent:rp_endofpacket -> router_005:sink_endofpacket
 	wire          router_005_src_valid;                                                       // router_005:src_valid -> rsp_demux_003:sink_valid
 	wire  [105:0] router_005_src_data;                                                        // router_005:src_data -> rsp_demux_003:sink_data
 	wire          router_005_src_ready;                                                       // rsp_demux_003:sink_ready -> router_005:src_ready
@@ -532,13 +532,13 @@ module soc_system_mm_interconnect_1 (
 	wire   [33:0] avalon_st_adapter_002_out_0_data;                                           // avalon_st_adapter_002:out_0_data -> sysid_qsys_control_slave_agent:rdata_fifo_sink_data
 	wire          avalon_st_adapter_002_out_0_ready;                                          // sysid_qsys_control_slave_agent:rdata_fifo_sink_ready -> avalon_st_adapter_002:out_0_ready
 	wire    [0:0] avalon_st_adapter_002_out_0_error;                                          // avalon_st_adapter_002:out_0_error -> sysid_qsys_control_slave_agent:rdata_fifo_sink_error
-	wire          led_pio_s1_agent_rdata_fifo_src_valid;                                      // led_pio_s1_agent:rdata_fifo_src_valid -> avalon_st_adapter_003:in_0_valid
-	wire   [33:0] led_pio_s1_agent_rdata_fifo_src_data;                                       // led_pio_s1_agent:rdata_fifo_src_data -> avalon_st_adapter_003:in_0_data
-	wire          led_pio_s1_agent_rdata_fifo_src_ready;                                      // avalon_st_adapter_003:in_0_ready -> led_pio_s1_agent:rdata_fifo_src_ready
-	wire          avalon_st_adapter_003_out_0_valid;                                          // avalon_st_adapter_003:out_0_valid -> led_pio_s1_agent:rdata_fifo_sink_valid
-	wire   [33:0] avalon_st_adapter_003_out_0_data;                                           // avalon_st_adapter_003:out_0_data -> led_pio_s1_agent:rdata_fifo_sink_data
-	wire          avalon_st_adapter_003_out_0_ready;                                          // led_pio_s1_agent:rdata_fifo_sink_ready -> avalon_st_adapter_003:out_0_ready
-	wire    [0:0] avalon_st_adapter_003_out_0_error;                                          // avalon_st_adapter_003:out_0_error -> led_pio_s1_agent:rdata_fifo_sink_error
+	wire          custom_leds_0_s0_agent_rdata_fifo_src_valid;                                // custom_leds_0_s0_agent:rdata_fifo_src_valid -> avalon_st_adapter_003:in_0_valid
+	wire   [33:0] custom_leds_0_s0_agent_rdata_fifo_src_data;                                 // custom_leds_0_s0_agent:rdata_fifo_src_data -> avalon_st_adapter_003:in_0_data
+	wire          custom_leds_0_s0_agent_rdata_fifo_src_ready;                                // avalon_st_adapter_003:in_0_ready -> custom_leds_0_s0_agent:rdata_fifo_src_ready
+	wire          avalon_st_adapter_003_out_0_valid;                                          // avalon_st_adapter_003:out_0_valid -> custom_leds_0_s0_agent:rdata_fifo_sink_valid
+	wire   [33:0] avalon_st_adapter_003_out_0_data;                                           // avalon_st_adapter_003:out_0_data -> custom_leds_0_s0_agent:rdata_fifo_sink_data
+	wire          avalon_st_adapter_003_out_0_ready;                                          // custom_leds_0_s0_agent:rdata_fifo_sink_ready -> avalon_st_adapter_003:out_0_ready
+	wire    [0:0] avalon_st_adapter_003_out_0_error;                                          // avalon_st_adapter_003:out_0_error -> custom_leds_0_s0_agent:rdata_fifo_sink_error
 	wire          dipsw_pio_s1_agent_rdata_fifo_src_valid;                                    // dipsw_pio_s1_agent:rdata_fifo_src_valid -> avalon_st_adapter_004:in_0_valid
 	wire   [33:0] dipsw_pio_s1_agent_rdata_fifo_src_data;                                     // dipsw_pio_s1_agent:rdata_fifo_src_data -> avalon_st_adapter_004:in_0_data
 	wire          dipsw_pio_s1_agent_rdata_fifo_src_ready;                                    // avalon_st_adapter_004:in_0_ready -> dipsw_pio_s1_agent:rdata_fifo_src_ready
@@ -867,11 +867,11 @@ module soc_system_mm_interconnect_1 (
 	);
 
 	altera_merlin_slave_translator #(
-		.AV_ADDRESS_W                   (2),
+		.AV_ADDRESS_W                   (1),
 		.AV_DATA_W                      (32),
 		.UAV_DATA_W                     (32),
 		.AV_BURSTCOUNT_W                (1),
-		.AV_BYTEENABLE_W                (1),
+		.AV_BYTEENABLE_W                (4),
 		.UAV_BYTEENABLE_W               (4),
 		.UAV_ADDRESS_W                  (32),
 		.UAV_BURSTCOUNT_W               (3),
@@ -892,26 +892,25 @@ module soc_system_mm_interconnect_1 (
 		.AV_WRITE_WAIT_CYCLES           (0),
 		.AV_SETUP_WAIT_CYCLES           (0),
 		.AV_DATA_HOLD_CYCLES            (0)
-	) led_pio_s1_translator (
+	) custom_leds_0_s0_translator (
 		.clk                    (clk_0_clk_clk),                                 //                      clk.clk
 		.reset                  (mm_bridge_0_reset_reset_bridge_in_reset_reset), //                    reset.reset
-		.uav_address            (led_pio_s1_agent_m0_address),                   // avalon_universal_slave_0.address
-		.uav_burstcount         (led_pio_s1_agent_m0_burstcount),                //                         .burstcount
-		.uav_read               (led_pio_s1_agent_m0_read),                      //                         .read
-		.uav_write              (led_pio_s1_agent_m0_write),                     //                         .write
-		.uav_waitrequest        (led_pio_s1_agent_m0_waitrequest),               //                         .waitrequest
-		.uav_readdatavalid      (led_pio_s1_agent_m0_readdatavalid),             //                         .readdatavalid
-		.uav_byteenable         (led_pio_s1_agent_m0_byteenable),                //                         .byteenable
-		.uav_readdata           (led_pio_s1_agent_m0_readdata),                  //                         .readdata
-		.uav_writedata          (led_pio_s1_agent_m0_writedata),                 //                         .writedata
-		.uav_lock               (led_pio_s1_agent_m0_lock),                      //                         .lock
-		.uav_debugaccess        (led_pio_s1_agent_m0_debugaccess),               //                         .debugaccess
-		.av_address             (led_pio_s1_address),                            //      avalon_anti_slave_0.address
-		.av_write               (led_pio_s1_write),                              //                         .write
-		.av_readdata            (led_pio_s1_readdata),                           //                         .readdata
-		.av_writedata           (led_pio_s1_writedata),                          //                         .writedata
-		.av_chipselect          (led_pio_s1_chipselect),                         //                         .chipselect
-		.av_read                (),                                              //              (terminated)
+		.uav_address            (custom_leds_0_s0_agent_m0_address),             // avalon_universal_slave_0.address
+		.uav_burstcount         (custom_leds_0_s0_agent_m0_burstcount),          //                         .burstcount
+		.uav_read               (custom_leds_0_s0_agent_m0_read),                //                         .read
+		.uav_write              (custom_leds_0_s0_agent_m0_write),               //                         .write
+		.uav_waitrequest        (custom_leds_0_s0_agent_m0_waitrequest),         //                         .waitrequest
+		.uav_readdatavalid      (custom_leds_0_s0_agent_m0_readdatavalid),       //                         .readdatavalid
+		.uav_byteenable         (custom_leds_0_s0_agent_m0_byteenable),          //                         .byteenable
+		.uav_readdata           (custom_leds_0_s0_agent_m0_readdata),            //                         .readdata
+		.uav_writedata          (custom_leds_0_s0_agent_m0_writedata),           //                         .writedata
+		.uav_lock               (custom_leds_0_s0_agent_m0_lock),                //                         .lock
+		.uav_debugaccess        (custom_leds_0_s0_agent_m0_debugaccess),         //                         .debugaccess
+		.av_address             (custom_leds_0_s0_address),                      //      avalon_anti_slave_0.address
+		.av_write               (custom_leds_0_s0_write),                        //                         .write
+		.av_read                (custom_leds_0_s0_read),                         //                         .read
+		.av_readdata            (custom_leds_0_s0_readdata),                     //                         .readdata
+		.av_writedata           (custom_leds_0_s0_writedata),                    //                         .writedata
 		.av_begintransfer       (),                                              //              (terminated)
 		.av_beginbursttransfer  (),                                              //              (terminated)
 		.av_burstcount          (),                                              //              (terminated)
@@ -920,6 +919,7 @@ module soc_system_mm_interconnect_1 (
 		.av_waitrequest         (1'b0),                                          //              (terminated)
 		.av_writebyteenable     (),                                              //              (terminated)
 		.av_lock                (),                                              //              (terminated)
+		.av_chipselect          (),                                              //              (terminated)
 		.av_clken               (),                                              //              (terminated)
 		.uav_clken              (1'b0),                                          //              (terminated)
 		.av_debugaccess         (),                                              //              (terminated)
@@ -1633,50 +1633,50 @@ module soc_system_mm_interconnect_1 (
 		.USE_READRESPONSE          (0),
 		.USE_WRITERESPONSE         (0),
 		.ECC_ENABLE                (0)
-	) led_pio_s1_agent (
-		.clk                     (clk_0_clk_clk),                                 //             clk.clk
-		.reset                   (mm_bridge_0_reset_reset_bridge_in_reset_reset), //       clk_reset.reset
-		.m0_address              (led_pio_s1_agent_m0_address),                   //              m0.address
-		.m0_burstcount           (led_pio_s1_agent_m0_burstcount),                //                .burstcount
-		.m0_byteenable           (led_pio_s1_agent_m0_byteenable),                //                .byteenable
-		.m0_debugaccess          (led_pio_s1_agent_m0_debugaccess),               //                .debugaccess
-		.m0_lock                 (led_pio_s1_agent_m0_lock),                      //                .lock
-		.m0_readdata             (led_pio_s1_agent_m0_readdata),                  //                .readdata
-		.m0_readdatavalid        (led_pio_s1_agent_m0_readdatavalid),             //                .readdatavalid
-		.m0_read                 (led_pio_s1_agent_m0_read),                      //                .read
-		.m0_waitrequest          (led_pio_s1_agent_m0_waitrequest),               //                .waitrequest
-		.m0_writedata            (led_pio_s1_agent_m0_writedata),                 //                .writedata
-		.m0_write                (led_pio_s1_agent_m0_write),                     //                .write
-		.rp_endofpacket          (led_pio_s1_agent_rp_endofpacket),               //              rp.endofpacket
-		.rp_ready                (led_pio_s1_agent_rp_ready),                     //                .ready
-		.rp_valid                (led_pio_s1_agent_rp_valid),                     //                .valid
-		.rp_data                 (led_pio_s1_agent_rp_data),                      //                .data
-		.rp_startofpacket        (led_pio_s1_agent_rp_startofpacket),             //                .startofpacket
-		.cp_ready                (cmd_mux_003_src_ready),                         //              cp.ready
-		.cp_valid                (cmd_mux_003_src_valid),                         //                .valid
-		.cp_data                 (cmd_mux_003_src_data),                          //                .data
-		.cp_startofpacket        (cmd_mux_003_src_startofpacket),                 //                .startofpacket
-		.cp_endofpacket          (cmd_mux_003_src_endofpacket),                   //                .endofpacket
-		.cp_channel              (cmd_mux_003_src_channel),                       //                .channel
-		.rf_sink_ready           (led_pio_s1_agent_rsp_fifo_out_ready),           //         rf_sink.ready
-		.rf_sink_valid           (led_pio_s1_agent_rsp_fifo_out_valid),           //                .valid
-		.rf_sink_startofpacket   (led_pio_s1_agent_rsp_fifo_out_startofpacket),   //                .startofpacket
-		.rf_sink_endofpacket     (led_pio_s1_agent_rsp_fifo_out_endofpacket),     //                .endofpacket
-		.rf_sink_data            (led_pio_s1_agent_rsp_fifo_out_data),            //                .data
-		.rf_source_ready         (led_pio_s1_agent_rf_source_ready),              //       rf_source.ready
-		.rf_source_valid         (led_pio_s1_agent_rf_source_valid),              //                .valid
-		.rf_source_startofpacket (led_pio_s1_agent_rf_source_startofpacket),      //                .startofpacket
-		.rf_source_endofpacket   (led_pio_s1_agent_rf_source_endofpacket),        //                .endofpacket
-		.rf_source_data          (led_pio_s1_agent_rf_source_data),               //                .data
-		.rdata_fifo_sink_ready   (avalon_st_adapter_003_out_0_ready),             // rdata_fifo_sink.ready
-		.rdata_fifo_sink_valid   (avalon_st_adapter_003_out_0_valid),             //                .valid
-		.rdata_fifo_sink_data    (avalon_st_adapter_003_out_0_data),              //                .data
-		.rdata_fifo_sink_error   (avalon_st_adapter_003_out_0_error),             //                .error
-		.rdata_fifo_src_ready    (led_pio_s1_agent_rdata_fifo_src_ready),         //  rdata_fifo_src.ready
-		.rdata_fifo_src_valid    (led_pio_s1_agent_rdata_fifo_src_valid),         //                .valid
-		.rdata_fifo_src_data     (led_pio_s1_agent_rdata_fifo_src_data),          //                .data
-		.m0_response             (2'b00),                                         //     (terminated)
-		.m0_writeresponsevalid   (1'b0)                                           //     (terminated)
+	) custom_leds_0_s0_agent (
+		.clk                     (clk_0_clk_clk),                                     //             clk.clk
+		.reset                   (mm_bridge_0_reset_reset_bridge_in_reset_reset),     //       clk_reset.reset
+		.m0_address              (custom_leds_0_s0_agent_m0_address),                 //              m0.address
+		.m0_burstcount           (custom_leds_0_s0_agent_m0_burstcount),              //                .burstcount
+		.m0_byteenable           (custom_leds_0_s0_agent_m0_byteenable),              //                .byteenable
+		.m0_debugaccess          (custom_leds_0_s0_agent_m0_debugaccess),             //                .debugaccess
+		.m0_lock                 (custom_leds_0_s0_agent_m0_lock),                    //                .lock
+		.m0_readdata             (custom_leds_0_s0_agent_m0_readdata),                //                .readdata
+		.m0_readdatavalid        (custom_leds_0_s0_agent_m0_readdatavalid),           //                .readdatavalid
+		.m0_read                 (custom_leds_0_s0_agent_m0_read),                    //                .read
+		.m0_waitrequest          (custom_leds_0_s0_agent_m0_waitrequest),             //                .waitrequest
+		.m0_writedata            (custom_leds_0_s0_agent_m0_writedata),               //                .writedata
+		.m0_write                (custom_leds_0_s0_agent_m0_write),                   //                .write
+		.rp_endofpacket          (custom_leds_0_s0_agent_rp_endofpacket),             //              rp.endofpacket
+		.rp_ready                (custom_leds_0_s0_agent_rp_ready),                   //                .ready
+		.rp_valid                (custom_leds_0_s0_agent_rp_valid),                   //                .valid
+		.rp_data                 (custom_leds_0_s0_agent_rp_data),                    //                .data
+		.rp_startofpacket        (custom_leds_0_s0_agent_rp_startofpacket),           //                .startofpacket
+		.cp_ready                (cmd_mux_003_src_ready),                             //              cp.ready
+		.cp_valid                (cmd_mux_003_src_valid),                             //                .valid
+		.cp_data                 (cmd_mux_003_src_data),                              //                .data
+		.cp_startofpacket        (cmd_mux_003_src_startofpacket),                     //                .startofpacket
+		.cp_endofpacket          (cmd_mux_003_src_endofpacket),                       //                .endofpacket
+		.cp_channel              (cmd_mux_003_src_channel),                           //                .channel
+		.rf_sink_ready           (custom_leds_0_s0_agent_rsp_fifo_out_ready),         //         rf_sink.ready
+		.rf_sink_valid           (custom_leds_0_s0_agent_rsp_fifo_out_valid),         //                .valid
+		.rf_sink_startofpacket   (custom_leds_0_s0_agent_rsp_fifo_out_startofpacket), //                .startofpacket
+		.rf_sink_endofpacket     (custom_leds_0_s0_agent_rsp_fifo_out_endofpacket),   //                .endofpacket
+		.rf_sink_data            (custom_leds_0_s0_agent_rsp_fifo_out_data),          //                .data
+		.rf_source_ready         (custom_leds_0_s0_agent_rf_source_ready),            //       rf_source.ready
+		.rf_source_valid         (custom_leds_0_s0_agent_rf_source_valid),            //                .valid
+		.rf_source_startofpacket (custom_leds_0_s0_agent_rf_source_startofpacket),    //                .startofpacket
+		.rf_source_endofpacket   (custom_leds_0_s0_agent_rf_source_endofpacket),      //                .endofpacket
+		.rf_source_data          (custom_leds_0_s0_agent_rf_source_data),             //                .data
+		.rdata_fifo_sink_ready   (avalon_st_adapter_003_out_0_ready),                 // rdata_fifo_sink.ready
+		.rdata_fifo_sink_valid   (avalon_st_adapter_003_out_0_valid),                 //                .valid
+		.rdata_fifo_sink_data    (avalon_st_adapter_003_out_0_data),                  //                .data
+		.rdata_fifo_sink_error   (avalon_st_adapter_003_out_0_error),                 //                .error
+		.rdata_fifo_src_ready    (custom_leds_0_s0_agent_rdata_fifo_src_ready),       //  rdata_fifo_src.ready
+		.rdata_fifo_src_valid    (custom_leds_0_s0_agent_rdata_fifo_src_valid),       //                .valid
+		.rdata_fifo_src_data     (custom_leds_0_s0_agent_rdata_fifo_src_data),        //                .data
+		.m0_response             (2'b00),                                             //     (terminated)
+		.m0_writeresponsevalid   (1'b0)                                               //     (terminated)
 	);
 
 	altera_avalon_sc_fifo #(
@@ -1692,32 +1692,32 @@ module soc_system_mm_interconnect_1 (
 		.USE_STORE_FORWARD   (0),
 		.USE_ALMOST_FULL_IF  (0),
 		.USE_ALMOST_EMPTY_IF (0)
-	) led_pio_s1_agent_rsp_fifo (
-		.clk               (clk_0_clk_clk),                                 //       clk.clk
-		.reset             (mm_bridge_0_reset_reset_bridge_in_reset_reset), // clk_reset.reset
-		.in_data           (led_pio_s1_agent_rf_source_data),               //        in.data
-		.in_valid          (led_pio_s1_agent_rf_source_valid),              //          .valid
-		.in_ready          (led_pio_s1_agent_rf_source_ready),              //          .ready
-		.in_startofpacket  (led_pio_s1_agent_rf_source_startofpacket),      //          .startofpacket
-		.in_endofpacket    (led_pio_s1_agent_rf_source_endofpacket),        //          .endofpacket
-		.out_data          (led_pio_s1_agent_rsp_fifo_out_data),            //       out.data
-		.out_valid         (led_pio_s1_agent_rsp_fifo_out_valid),           //          .valid
-		.out_ready         (led_pio_s1_agent_rsp_fifo_out_ready),           //          .ready
-		.out_startofpacket (led_pio_s1_agent_rsp_fifo_out_startofpacket),   //          .startofpacket
-		.out_endofpacket   (led_pio_s1_agent_rsp_fifo_out_endofpacket),     //          .endofpacket
-		.csr_address       (2'b00),                                         // (terminated)
-		.csr_read          (1'b0),                                          // (terminated)
-		.csr_write         (1'b0),                                          // (terminated)
-		.csr_readdata      (),                                              // (terminated)
-		.csr_writedata     (32'b00000000000000000000000000000000),          // (terminated)
-		.almost_full_data  (),                                              // (terminated)
-		.almost_empty_data (),                                              // (terminated)
-		.in_empty          (1'b0),                                          // (terminated)
-		.out_empty         (),                                              // (terminated)
-		.in_error          (1'b0),                                          // (terminated)
-		.out_error         (),                                              // (terminated)
-		.in_channel        (1'b0),                                          // (terminated)
-		.out_channel       ()                                               // (terminated)
+	) custom_leds_0_s0_agent_rsp_fifo (
+		.clk               (clk_0_clk_clk),                                     //       clk.clk
+		.reset             (mm_bridge_0_reset_reset_bridge_in_reset_reset),     // clk_reset.reset
+		.in_data           (custom_leds_0_s0_agent_rf_source_data),             //        in.data
+		.in_valid          (custom_leds_0_s0_agent_rf_source_valid),            //          .valid
+		.in_ready          (custom_leds_0_s0_agent_rf_source_ready),            //          .ready
+		.in_startofpacket  (custom_leds_0_s0_agent_rf_source_startofpacket),    //          .startofpacket
+		.in_endofpacket    (custom_leds_0_s0_agent_rf_source_endofpacket),      //          .endofpacket
+		.out_data          (custom_leds_0_s0_agent_rsp_fifo_out_data),          //       out.data
+		.out_valid         (custom_leds_0_s0_agent_rsp_fifo_out_valid),         //          .valid
+		.out_ready         (custom_leds_0_s0_agent_rsp_fifo_out_ready),         //          .ready
+		.out_startofpacket (custom_leds_0_s0_agent_rsp_fifo_out_startofpacket), //          .startofpacket
+		.out_endofpacket   (custom_leds_0_s0_agent_rsp_fifo_out_endofpacket),   //          .endofpacket
+		.csr_address       (2'b00),                                             // (terminated)
+		.csr_read          (1'b0),                                              // (terminated)
+		.csr_write         (1'b0),                                              // (terminated)
+		.csr_readdata      (),                                                  // (terminated)
+		.csr_writedata     (32'b00000000000000000000000000000000),              // (terminated)
+		.almost_full_data  (),                                                  // (terminated)
+		.almost_empty_data (),                                                  // (terminated)
+		.in_empty          (1'b0),                                              // (terminated)
+		.out_empty         (),                                                  // (terminated)
+		.in_error          (1'b0),                                              // (terminated)
+		.out_error         (),                                                  // (terminated)
+		.in_channel        (1'b0),                                              // (terminated)
+		.out_channel       ()                                                   // (terminated)
 	);
 
 	altera_merlin_slave_agent #(
@@ -2051,11 +2051,11 @@ module soc_system_mm_interconnect_1 (
 	);
 
 	soc_system_mm_interconnect_1_router_002 router_005 (
-		.sink_ready         (led_pio_s1_agent_rp_ready),                     //      sink.ready
-		.sink_valid         (led_pio_s1_agent_rp_valid),                     //          .valid
-		.sink_data          (led_pio_s1_agent_rp_data),                      //          .data
-		.sink_startofpacket (led_pio_s1_agent_rp_startofpacket),             //          .startofpacket
-		.sink_endofpacket   (led_pio_s1_agent_rp_endofpacket),               //          .endofpacket
+		.sink_ready         (custom_leds_0_s0_agent_rp_ready),               //      sink.ready
+		.sink_valid         (custom_leds_0_s0_agent_rp_valid),               //          .valid
+		.sink_data          (custom_leds_0_s0_agent_rp_data),                //          .data
+		.sink_startofpacket (custom_leds_0_s0_agent_rp_startofpacket),       //          .startofpacket
+		.sink_endofpacket   (custom_leds_0_s0_agent_rp_endofpacket),         //          .endofpacket
 		.clk                (clk_0_clk_clk),                                 //       clk.clk
 		.reset              (mm_bridge_0_reset_reset_bridge_in_reset_reset), // clk_reset.reset
 		.src_ready          (router_005_src_ready),                          //       src.ready
@@ -2769,9 +2769,9 @@ module soc_system_mm_interconnect_1 (
 	) avalon_st_adapter_003 (
 		.in_clk_0_clk   (clk_0_clk_clk),                                 // in_clk_0.clk
 		.in_rst_0_reset (mm_bridge_0_reset_reset_bridge_in_reset_reset), // in_rst_0.reset
-		.in_0_data      (led_pio_s1_agent_rdata_fifo_src_data),          //     in_0.data
-		.in_0_valid     (led_pio_s1_agent_rdata_fifo_src_valid),         //         .valid
-		.in_0_ready     (led_pio_s1_agent_rdata_fifo_src_ready),         //         .ready
+		.in_0_data      (custom_leds_0_s0_agent_rdata_fifo_src_data),    //     in_0.data
+		.in_0_valid     (custom_leds_0_s0_agent_rdata_fifo_src_valid),   //         .valid
+		.in_0_ready     (custom_leds_0_s0_agent_rdata_fifo_src_ready),   //         .ready
 		.out_0_data     (avalon_st_adapter_003_out_0_data),              //    out_0.data
 		.out_0_valid    (avalon_st_adapter_003_out_0_valid),             //         .valid
 		.out_0_ready    (avalon_st_adapter_003_out_0_ready),             //         .ready

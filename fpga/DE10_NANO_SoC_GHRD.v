@@ -186,7 +186,7 @@ soc_system u0(
                .hps_0_hps_io_hps_io_gpio_inst_GPIO54(HPS_KEY),              //                               .hps_io_gpio_inst_GPIO54
                .hps_0_hps_io_hps_io_gpio_inst_GPIO61(HPS_GSENSOR_INT),      //                               .hps_io_gpio_inst_GPIO61
                //FPGA Partion
-               .led_pio_external_connection_export(fpga_led_internal),      //    led_pio_external_connection.export
+               .custom_leds_0_leds_conduit(fpga_led_internal),      //    led_pio_external_connection.export
                .dipsw_pio_external_connection_export(SW),                   //  dipsw_pio_external_connection.export
                .button_pio_external_connection_export(fpga_debounced_buttons),
                                                                             // button_pio_external_connection.export
