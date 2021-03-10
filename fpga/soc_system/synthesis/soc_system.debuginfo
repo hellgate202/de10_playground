@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="soc_system" kind="system" version="20.1" fabric="QSYS">
  <!-- Format version 20.1 720 (Future versions may contain additional information.) -->
- <!-- 2021.03.10.15:56:58 -->
+ <!-- 2021.03.10.16:56:27 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1615380968</value>
+  <value>1615384507</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -2084,6 +2084,18 @@ parameters are a RESULT of the module parameters. -->
    path="custom_leds_0">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
+  <assignment>
+   <name>embeddedsw.dts.compatible</name>
+   <value>dev,custom-leds</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.dts.group</name>
+   <value>leds</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.dts.vendor</name>
+   <value>dsa</value>
+  </assignment>
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -49852,7 +49864,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1615380968</value>
+   <value>1615384507</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -49872,7 +49884,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.timestamp</name>
-   <value>1615380968</value>
+   <value>1615384507</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -49888,7 +49900,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1615380968</value>
+   <value>1615384507</value>
    <derived>true</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -61862,5 +61874,5 @@ parameters are a RESULT of the module parameters. -->
   <version>20.1</version>
  </plugin>
  <reportVersion>20.1 720</reportVersion>
- <uniqueIdentifier>36A1D1735309000001781C35E02B</uniqueIdentifier>
+ <uniqueIdentifier>5207D15432E5000001781C6BEC3F</uniqueIdentifier>
 </EnsembleReport>

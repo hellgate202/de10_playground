@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="soc_system" kind="soc_system" version="1.0" fabric="QSYS">
  <!-- Format version 20.1 720 (Future versions may contain additional information.) -->
- <!-- 2021.03.10.15:56:19 -->
+ <!-- 2021.03.10.16:55:19 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1615380968</value>
+  <value>1615384507</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -1986,6 +1986,18 @@ parameters are a RESULT of the module parameters. -->
    path="custom_leds_0">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
+  <assignment>
+   <name>embeddedsw.dts.compatible</name>
+   <value>dev,custom-leds</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.dts.group</name>
+   <value>leds</value>
+  </assignment>
+  <assignment>
+   <name>embeddedsw.dts.vendor</name>
+   <value>dsa</value>
+  </assignment>
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -81707,7 +81719,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1615380968</value>
+   <value>1615384507</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -81727,7 +81739,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.timestamp</name>
-   <value>1615380968</value>
+   <value>1615384507</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -81743,7 +81755,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1615380968</value>
+   <value>1615384507</value>
    <derived>true</derived>
    <enabled>false</enabled>
    <visible>false</visible>
