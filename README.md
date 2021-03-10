@@ -1,5 +1,31 @@
 Building linux for DE10 board
 
+# FPGA
+
+FPGA firmware is built from modified DE10-Nano GHRD
+
+led_pio is replace with custom_leds module for further educational purposes.
+
+Few related changes were also made in .xml board files
+
+Open .qpf file in  Quartus GUI, update IP-cores if necessary and build all.
+
+# Device Tree
+
+Run embedded_command_shell.sh from quartus directory to export path to all FPGA related tools
+
+After building a quartus project do in the same directory where .qpf file is located
+```
+sopc2dts --input soc_system.sopcinfo \
+         --output soc_system.dts \
+         --type dts \
+         --board soc_system_board_info.xml \
+         --board hps_common_board_info.xml \
+         --bridge-removal all --clocks 
+
+dtc -I dts -O dtb -o soc_system.dtb soc_system.dts
+```
+
 # U-Boot
 
 U-Boot is used from the official U-Boot repository 
@@ -68,6 +94,13 @@ Generated MAC is added to include/configs/socfpga_common.h
 #endif
 ```
 
+Generating SPL data
+```
+bsp-create-settings --type spl --bsp-dir build --preloader-settings-dir hps_isw_handoff/soc_system_hps_0/ --settings build/settings.bsp
+../u-boot/arch/arm/mach-socfpga/qts-filter.sh cyclone5 ./ ./build ../u-boot/board/terasic/de10-nano/qts/
+```
+
+
 Setting compiler
 
 ```
@@ -85,6 +118,8 @@ make ARCH=arm -j 4
 ```
 
 Second command is needed only if you want to modify U-boot
+
+Enable FAT system support in U-Boot config
 
 # Kernel
 
