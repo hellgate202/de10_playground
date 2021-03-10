@@ -132,3 +132,7 @@ set_interface_property leds SVD_ADDRESS_GROUP ""
 
 add_interface_port leds leds conduit Output 8
 
+# Device tree generation
+set_module_assignment embeddedsw.dts.vendor "dsa"
+set_module_assignment embeddedsw.dts.compatible "dev,custom-leds"
+set_module_assignment embeddedsw.dts.group "leds"
